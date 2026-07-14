@@ -6,7 +6,7 @@
 
 **Bottom-up · Transparent · Offline-first · Free for people**
 
-[🌐 globaid.org](https://globaid.org) · [📖 Help](https://globaid.org/) · [🔓 Open data (API)](https://globaid.org/api/public) · [💬 Contact](mailto:hola@globaid.org)
+[🌐 Open the app — globaid.org](https://globaid.org) · [🔓 Open data (API)](https://globaid.org/api/public) · [💬 Contact](mailto:hola@globaid.org)
 
 > *Globaid is the app we want **everyone** to install, but that we hope **no one** will **ever** have to use.*
 
@@ -28,8 +28,7 @@
 10. [Privacy and ethics](#-privacy-and-ethics)
 11. [Current status and roadmap](#-current-status-and-roadmap)
 12. [How to collaborate](#-how-to-collaborate)
-13. [Getting started (technical)](#-getting-started-technical)
-14. [License and contact](#-license-and-contact)
+13. [Contact](#-contact)
 
 ---
 
@@ -66,7 +65,7 @@ And a discipline of scope: **it is not a social network**. We don't compete with
 
 ## 🧩 The real problems it solves
 
-From the analysis of the DANA (see [`docs/`](docs/)), these are the *jobs-to-be-done* Globaid tackles head-on:
+These are the *jobs-to-be-done* Globaid tackles head-on, drawn from the analysis of the DANA:
 
 | Real problem in the DANA | Globaid's answer |
 |---|---|
@@ -105,7 +104,7 @@ From the analysis of the DANA (see [`docs/`](docs/)), these are the *jobs-to-be-
 - **Transparency**: traced donation ledger + shareable **public page** per area + **open API** (B2G/press).
 - **Trust and reputation** from real actions (corroborations, vouches, badges).
 - **Progressive identity**: viewing requires nothing; acting requires sign-in (email magic link).
-- **Aggregate analytics** in the admin panel (no individual tracking).
+- **Aggregate analytics** for coordinators (no individual tracking).
 - **Bilingual ES/EN** with autodetection; **installable** (PWA); **accessibility** (text-size control, high contrast).
 
 ---
@@ -129,9 +128,9 @@ A deliberately **simple and resilient** design: no framework, no build step, no 
 
 ```
 ┌───────────────────────────────────────────────────────────┐
-│  PWA (app/) — HTML + CSS + JS (ES modules), no build       │
-│  • IndexedDB  → everything works offline (db.js)          │
-│  • Service Worker → cached app shell + push (sw.js)        │
+│  PWA — HTML + CSS + JS (ES modules), no build              │
+│  • IndexedDB  → everything works offline                  │
+│  • Service Worker → cached app shell + push               │
 │  • MapLibre + OpenStreetMap (map) · offline QR            │
 └───────────────┬───────────────────────────────────────────┘
                 │ progressive enhancement (if online)
@@ -139,50 +138,43 @@ A deliberately **simple and resilient** design: no framework, no build step, no 
 │  Supabase — Postgres + RLS + Realtime + Auth (magic link) │
 │  Sync with a persistent offline queue                     │
 └───────────────┬───────────────────────────────────────────┘
-                │ serverless functions (Vercel)
+                │ serverless functions
 ┌───────────────▼───────────────────────────────────────────┐
-│  /api/ai      → secure proxy to Claude (triage, matching,  │
-│                 translation, social draft, tips)           │
-│  /api/push    → Web Push (VAPID) to subscribers           │
-│  /api/public  → open JSON data (transparency / B2G)       │
-│  /api/share   → per-area Open Graph cards (SEO / social)  │
+│  AI (Claude): triage · matching · translation             │
+│  Web Push (VAPID) · Open data API · Open Graph cards      │
 └───────────────────────────────────────────────────────────┘
 ```
 
-**Stack:**
-- **Frontend:** vanilla PWA (ES modules), IndexedDB, Service Worker, MapLibre GL, [qrcode-generator](https://github.com/kazuhikoarase/qrcode-generator) (offline QR), Tabler icons.
-- **Backend:** [Supabase](https://supabase.com) (Postgres, RLS, Realtime, Auth) — the client only ships the *publishable key*; secret keys live only in environment variables.
-- **Serverless:** Node functions on Vercel for AI, push, open data and OG.
-- **AI:** Claude API (Anthropic) — default model `claude-opus-4-8`; `claude-haiku-4-5` recommended for triage.
-- **Offline-first:** instant local read/write; background sync with a persistent queue ("connectivity islands").
+**Stack:** vanilla PWA (ES modules, IndexedDB, Service Worker), [MapLibre GL](https://maplibre.org), offline QR, [Supabase](https://supabase.com) (Postgres + RLS + Realtime + Auth), serverless functions on [Vercel](https://vercel.com), and the [Claude API](https://www.anthropic.com) (Anthropic) for triage, matching and translation.
 
 **Design principles:**
 - *Local-first*: the UI never waits on the network.
-- *Progressive enhancement*: with no backend, the app is still useful (demo/local).
+- *Progressive enhancement*: with no backend, the app is still useful.
 - *One engine, many profiles*: flood, earthquake and community share primitives (needs, offers, trust), at different intensities.
+- *Security*: only a public *publishable key* ships in the client; secret keys live only in server environment variables; access is enforced by database Row-Level Security.
 
 ---
 
 ## 🚧 How it was built
 
-Globaid was built **incrementally and verified**, in sprints, starting from prior research (the DANA and the landscape of existing tools, in [`docs/`](docs/)).
+Globaid was built **incrementally and verified**, in sprints, starting from prior research on the DANA and the landscape of existing tools.
 
-**MVP + foundations:** ES/EN i18n, guided help, event/community model, real map, real Claude AI, Supabase multi-user backend, magic-link identity, traced donations + partner organization, automatic event detection (USGS) and admin mode, resilience and polish.
+**MVP + foundations:** ES/EN i18n, guided user guide, event/community model, real map, real Claude AI, Supabase multi-user backend, magic-link identity, traced donations + partner organization, automatic event detection, admin mode, resilience and polish.
 
-**Product phase (Sprints 7–14):**
+**Product phase:**
 
-| Sprint | Delivered |
+| # | Delivered |
 |---|---|
-| 7 | Event trust (anti-fake) |
-| 8 | "I'm safe" + anti-hoax board |
-| 9 | Push alerts (Web Push / PWA) |
-| 10 | Living communities (join by QR + peace→emergency bridge) |
-| 11 | Field robustness (photos, logistics points, offline status) |
-| 12 | Public transparency + open API (B2G) |
-| 13 | Analytics in the admin panel |
-| 14 | SEO + share cards (Open Graph) |
+| 1 | Event trust (anti-fake) |
+| 2 | "I'm safe" + anti-hoax board |
+| 3 | Push alerts (Web Push / PWA) |
+| 4 | Living communities (join by QR + peace→emergency bridge) |
+| 5 | Field robustness (photos, logistics points, offline status) |
+| 6 | Public transparency + open API (B2G) |
+| 7 | Analytics for coordinators |
+| 8 | SEO + share cards (Open Graph) |
 
-Every sprint was **verified in a demo environment** (without polluting real data) and shipped to production with auto-deploy.
+Every step was **verified in a demo environment** and shipped to production with automatic deployment.
 
 ---
 
@@ -192,7 +184,7 @@ Every sprint was **verified in a demo environment** (without polluting real data
 - **Transparency without holding money.** Globaid never touches the funds: it routes to an NGO that issues the tax receipt, and the ledger traces every step. This avoids the biggest reputational and legal risk.
 - **Anti-hoax without censorship.** Information is not deleted: coordinators **label** it (confirmed/debunked) with its source, so the truth stands out over the noise.
 - **Privacy of sensitive data.** The vulnerable-people registry and check-ins are never publicly exposed (strict RLS; the open API includes no personal data).
-- **Zero friction.** A PWA with no mandatory install, progressive identity, and a build-free architecture anyone can deploy.
+- **Zero friction.** A PWA with no mandatory install and progressive identity.
 - **The "valley" between disasters.** **Peace mode** solves the app dying when there's no emergency: it builds, in calm, the three assets a disaster makes impossible to create in time — **trust, a capabilities map, and a vulnerable-people registry**.
 
 ---
@@ -213,98 +205,36 @@ The **open API** and radical transparency aren't just ethics: they're the produc
 ## 🔒 Privacy and ethics
 
 - **Minimal personal data**, gathered with consent (vulnerable registry is opt-in).
-- **RLS** on Supabase; push subscriptions and check-ins are **not publicly readable**.
+- Sensitive data (vulnerable registry, safety check-ins) is **never publicly readable**.
 - The **public API** exposes only aggregates and non-personal data.
 - **No third-party cookies or individual tracking** in the analytics.
-- Privacy policy available in the app.
 
 ---
 
 ## 🗺️ Current status and roadmap
 
-**Today:** a complete app deployed at [globaid.org](https://globaid.org), with a real backend (Supabase), real AI (Claude), push, communities, public transparency and analytics. Ready for a **pilot with real users**.
+**Today:** a complete app deployed at [globaid.org](https://globaid.org), with a real backend, real AI, push, communities, public transparency and analytics. Ready for a **pilot with real users**.
 
-**Next steps:**
-- Safe social sharing (aggregate text with no personal data) + explainer **video** on the landing page.
-- Configurable social auto-posting (optional).
-- Real OTP/SMS as a data-free fallback.
-- Field pilot in Valencia with neighbourhood associations.
-- Setting up the **partner NGO/entity** for donations.
-- Legal review (privacy, data protection).
+**Next steps:** explainer video, safe social sharing, real OTP/SMS fallback, a field pilot in Valencia with neighbourhood associations, setting up the partner NGO for donations, and a legal review.
 
 ---
 
 ## 🤝 How to collaborate
 
-Globaid is looking for allies. If you're an **NGO, city council, neighbourhood association, civil protection body, foundation or volunteer** (technical or not), you can help by:
+Globaid is looking for allies. If you're an **NGO, city council, neighbourhood association, civil protection body, foundation or volunteer**, you can help by:
 
 - **Piloting** the app in your community or municipality.
 - Being the **partner organization** that channels donations (with tax receipts).
 - Contributing **field knowledge** (emergency management, volunteering).
-- **Contributing** code, translations or documentation.
 - **Spreading the word.**
 
-📬 Write to us at **[hola@globaid.org](mailto:hola@globaid.org)**.
-
 ---
 
-## ⚙️ Getting started (technical)
+## 📬 Contact
 
-> Internal / legacy code name: **ResQ**. Domain and brand: **Globaid**.
-
-### Run locally
-
-No dependencies, no build. Just Node.js:
-
-```bash
-node server.mjs      # or: npm start
-```
-
-Open **http://localhost:5173**. With no backend configured, it runs in local/demo mode.
-
-### Deploy (Vercel)
-
-1. Import the repository at [vercel.com/new](https://vercel.com/new).
-2. **Root Directory** = `app` · **Framework Preset** = `Other` · no *build command*.
-3. Deploy. Every `push` to `main` deploys automatically.
-
-### Environment variables (Vercel → Settings → Environment Variables)
-
-| Variable | Purpose |
-|---|---|
-| `ANTHROPIC_API_KEY` | Claude AI (triage, matching, translation). **Required** for real AI. |
-| `ANTHROPIC_MODEL` | Optional. Defaults to `claude-opus-4-8`; `claude-haiku-4-5` recommended. |
-| `VAPID_PRIVATE_KEY` | Push alerts (the public key is in `config.js`). |
-| `VAPID_SUBJECT` | Push contact, e.g. `mailto:privacy@globaid.org`. |
-| `SUPABASE_SECRET_KEY` | Supabase *secret key* (reads/cleans push subscriptions; bypasses RLS). |
-
-> Secret keys **never** go in the repository. The Supabase *publishable key* is public by design (security is enforced by RLS policies).
-
-### Database (Supabase → SQL Editor)
-
-Run the scripts in [`supabase/`](supabase/): `schema.sql` (base tables) and the per-feature ones: `orgs.sql`, `settings.sql`, `checkins.sql`, `push.sql`, `points.sql`, `allow-delete.sql`.
-
-### Repo structure
-
-```
-app/            # the PWA (deploy root on Vercel)
-  index.html    # shell + meta/SEO
-  js/           # app.js, store.js, db.js, data.js, supabase.js, auth.js, i18n.js…
-  api/          # serverless functions: ai, push, public, share
-  css/ · vendor/ · icons/ · sw.js · manifest.webmanifest · og.svg
-supabase/       # SQL schema and policies
-docs/           # research, vision, MVP, roadmap, visibility plan
-server.mjs      # static server for local development only
-```
-
----
-
-## 📄 License and contact
-
-- **License:** MIT (see [`LICENSE`](LICENSE)).
 - **Web:** [globaid.org](https://globaid.org)
-- **Contact:** [hola@globaid.org](mailto:hola@globaid.org)
-- **Documentation:** [`docs/`](docs/)
+- **Email:** [hola@globaid.org](mailto:hola@globaid.org)
+- **Open data / API:** [globaid.org/api/public](https://globaid.org/api/public)
 
 <div align="center">
 
