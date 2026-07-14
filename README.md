@@ -84,28 +84,45 @@ These are the *jobs-to-be-done* Globaid tackles head-on, drawn from the analysis
 ## 🛠️ What Globaid does (features)
 
 ### In an emergency
-- **Live map** of needs by urgency, with disaster **phase** intelligence.
+- **Live needs map** by urgency, with disaster **phase** intelligence.
 - **Ask for help** in natural language: **Claude AI** detects category, urgency, whether it's for someone else and whether a vulnerable person is affected. You can **attach a photo**.
-- **Offer help**: volunteer, resource or donation; suggests who to help nearby.
+- **Offer help** (volunteer, resource or donation) with **AI matching** that suggests who to help nearby.
+- **Full request lifecycle**: claim → *on the way* → *delivered* → **confirmed by the recipient** ("I'll take it").
+- **Task-linked chat**: private messaging tied to each need to coordinate the delivery.
 - **"I'm safe"**: everyone marks themselves safe or asks for help; coordinators instantly see who needs help.
 - **Anti-hoax board**: verified updates; coordinators mark information as **CONFIRMED / DEBUNKED** with its source.
 - **Push alerts**: reach the phone **even with the app closed** (evacuations, water points, debunks).
 - **Help / logistics points**: water, food, charging, **WiFi/connectivity**, shelter, drop-off point, medical care.
 - **Missing people**: report and search.
-- **Emergency phone numbers + AI tips** per disaster type.
+- **Emergency phone numbers + AI safety tips** per disaster type.
 - **Offline tool kit**: flashlight, SOS light, siren, compass, my location, CPR metronome, first-aid guide, SOS message.
+- **Directions** to any need or point (opens maps).
 
 ### Everyday (peace mode)
 - **Neighbourhood communities** for mutual aid and preparedness.
 - **Join by link or QR** (drives the network effect).
 - **Peace → emergency bridge**: when disaster hits, the community **switches to emergency mode in one tap**, keeping its neighbours, trust and resources.
+- **Vulnerable-people registry** (opt-in, with consent) — visible only to coordinators; built *before* disaster strikes.
 
-### Cross-cutting
-- **Transparency**: traced donation ledger + shareable **public page** per area + **open API** (B2G/press).
-- **Trust and reputation** from real actions (corroborations, vouches, badges).
-- **Progressive identity**: viewing requires nothing; acting requires sign-in (email magic link).
-- **Aggregate analytics** for coordinators (no individual tracking).
-- **Bilingual ES/EN** with autodetection; **installable** (PWA); **accessibility** (text-size control, high contrast).
+### Trust & transparency
+- **Transparency ledger**: every donation traced in 5 steps — donor → partner NGO (tax receipt) → purchase → house-by-house delivery → **confirmed receipt**. Globaid **never holds the money**.
+- **Public transparency page** per area (shareable, no login) + **open JSON API** (B2G / press).
+- **Needs corroboration**: cross-verification ("N confirmations") raises trust and curbs hoaxes.
+- **Trust & reputation** from real, verifiable actions — vouches, levels and badges (Participant → Verified → Trusted neighbour → Verified coordinator) + **report/flag**.
+
+### Coordination & AI
+- **AI**: triage, matching and translation (real-time, both languages) via a secure server-side proxy.
+- **Automatic event detection** (e.g. earthquakes via public feeds) → **one-tap activation** of a zone.
+- **Coordinator panel**: zone situation, needs by type, phase anticipation, donation management.
+- **AI social-post draft** to mobilize help on social media.
+- **Admin panel**: manage the catalog of trusted NGOs and assign which one receives each event's or region's donations.
+- **Aggregate analytics** for coordinators — zones, needs, coverage, donations — with **no individual tracking**.
+
+### Everywhere
+- **Bilingual ES/EN** with device autodetection.
+- **Installable PWA**, **offline-first** (works with no connection), and **accessibility** (text-size control, high contrast).
+- **Progressive identity**: viewing requires nothing; acting requires a passwordless email **magic link**.
+- **Safe demo mode**: a sandbox with example data (two disasters, two communities) to try everything without touching anything real.
 
 ---
 
@@ -157,24 +174,57 @@ A deliberately **simple and resilient** design: no framework, no build step, no 
 
 ## 🚧 How it was built
 
-Globaid was built **incrementally and verified**, in sprints, starting from prior research on the DANA and the landscape of existing tools.
+Globaid grew **incrementally and verified at every step** — from prior research (the DANA and the landscape of existing tools) to a complete product. This is the real journey:
 
-**MVP + foundations:** ES/EN i18n, guided user guide, event/community model, real map, real Claude AI, Supabase multi-user backend, magic-link identity, traced donations + partner organization, automatic event detection, admin mode, resilience and polish.
+**1 · Foundations (MVP)** — the universal engine and the core screens.
+- Bilingual ES/EN with device autodetection.
+- Guided user guide.
+- Multi-context model: events (each disaster) + communities.
+- Real map (OpenStreetMap / MapLibre) with peace mode.
+- Opt-in vulnerable-people registry.
+- Real Claude AI for triage.
 
-**Product phase:**
+**2 · Core platform (Sprints 1–6).**
+- AI to 100%: matching + translation on the same secure proxy.
+- Real multi-user backend (Supabase) with offline sync and a persistent queue.
+- Real identity & communication (passwordless email magic link).
+- Real donations + partner fiscal entity, fully traced end-to-end.
+- Automatic event detection + admin mode.
+- Resilience and polish (local-first boot, robustness).
+
+**3 · UX depth (interaction improvements).**
+- Need detail screen with full status timeline.
+- Share a specific request.
+- View-on-map + pin → detail.
+- Two-tab map (needs / help).
+- Emergency-phone board + AI tips.
+- Visible trust & badges + content reporting.
+- Improved footer; offer help with location.
+
+**4 · Identity & coordination.**
+- Magic-link sign-in (Supabase Auth).
+- Needs corroboration (cross-verification).
+- Missing-person reporting and search.
+- Manual assignment ("I'll take it").
+
+**5 · Detection & outreach.**
+- Automatic event detection (USGS) with one-tap activation.
+- AI-generated social-media draft.
+
+**6 · Product phase (Sprints 7–14).**
 
 | # | Delivered |
 |---|---|
-| 1 | Event trust (anti-fake) |
-| 2 | "I'm safe" + anti-hoax board |
-| 3 | Push alerts (Web Push / PWA) |
-| 4 | Living communities (join by QR + peace→emergency bridge) |
-| 5 | Field robustness (photos, logistics points, offline status) |
-| 6 | Public transparency + open API (B2G) |
-| 7 | Analytics for coordinators |
-| 8 | SEO + share cards (Open Graph) |
+| 7 | Event trust (anti-fake) |
+| 8 | "I'm safe" + anti-hoax board |
+| 9 | Push alerts (Web Push / PWA) |
+| 10 | Living communities (join by QR + peace→emergency bridge) |
+| 11 | Field robustness (photos, logistics points, offline status) |
+| 12 | Public transparency + open API (B2G) |
+| 13 | Analytics for coordinators |
+| 14 | SEO + share cards (Open Graph) |
 
-Every step was **verified in a demo environment** and shipped to production with automatic deployment.
+Every step was **verified in a demo environment** (without polluting real data) and shipped to production with automatic deployment.
 
 ---
 
@@ -239,6 +289,13 @@ Globaid is looking for allies. If you're an **NGO, city council, neighbourhood a
 <div align="center">
 
 ---
+
+*Built from Valencia, in memory of the 2024 DANA flood.* 🦇
+
+**Globaid — to help those who help.**
+
+</div>
+
 
 *Built from Valencia, in memory of the 2024 DANA flood.* 🦇
 
