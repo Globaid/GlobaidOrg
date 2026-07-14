@@ -297,8 +297,5 @@ Globaid is looking for allies. If you're an **NGO, city council, neighbourhood a
 </div>
 
 
-*Built from Valencia, in memory of the 2024 DANA flood.* 🦇
-
-**Globaid — to help those who help.**
 
 </div>
